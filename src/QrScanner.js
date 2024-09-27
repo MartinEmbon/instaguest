@@ -96,26 +96,28 @@ const QrScanner = () => {
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
-    setSelectedFile(file);
-
+    if (!file) return;
+  
     const reader = new FileReader();
     reader.onload = (event) => {
       const image = new Image();
       image.src = event.target.result;
+  
       image.onload = () => {
-        const canvas = document.createElement('canvas');
+        const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
-        canvas.width = image.width;
-        canvas.height = image.height;
+        canvas.width = image.width;  // Set canvas width
+        canvas.height = image.height; // Set canvas height
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
-
+  
+        // Now process the imageData
         const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
         const code = jsQR(imageData.data, canvas.width, canvas.height);
-
+  
         if (code) {
           setScannedQRCode(code.data);
-          setEmail(code.data); // Populate the email input with the scanned QR code
-          displayAlert(`QR Code scanned: ${code.data}`);
+          setEmail(code.data);
+          setAlertMessage(`QR Code scanned: ${code.data}`);
         } else {
           setError('No QR code found in the image.');
         }
