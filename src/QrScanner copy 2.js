@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import jsQR from 'jsqr';
 import axios from 'axios';
 import './QrScanner.css';
@@ -10,59 +10,6 @@ const QrScanner = () => {
   const [searchResult, setSearchResult] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [scannedQRCode, setScannedQRCode] = useState('');
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [scanning, setScanning] = useState(false);
-
-  // Start camera when the component mounts
-  useEffect(() => {
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.play();
-        }
-      } catch (err) {
-        console.error('Error accessing camera:', err);
-        setError('Unable to access camera.');
-      }
-    };
-
-    startCamera();
-  }, []);
-
-  // Function to scan QR code from video
-  const scanQRCode = () => {
-    if (!scanning) return;
-
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-
-    if (videoRef.current) {
-      canvas.width = videoRef.current.videoWidth;
-      canvas.height = videoRef.current.videoHeight;
-      context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-
-      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-      const code = jsQR(imageData.data, canvas.width, canvas.height);
-
-      if (code) {
-        setScannedQRCode(code.data);
-        alert(`QR Code scanned: ${code.data}`);
-        setScanning(false); // Stop scanning after a successful scan
-      }
-    }
-  };
-
-  // Continuously scan QR codes every second
-  useEffect(() => {
-    const interval = setInterval(() => {
-      scanQRCode();
-    }, 1000); // Adjust the interval as necessary
-
-    return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, [scanning]);
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -114,9 +61,9 @@ const QrScanner = () => {
 
   const markGuestPresentByEmail = async () => {
     if (searchResult) {
-      console.log('Searching for guest by email:', email); // Check if function is called
+        console.log('Searching for guest by email:', email); // Check if function is called
 
-      try {
+        try {
         const response = await axios.post('https://us-central1-moonlit-sphinx-400613.cloudfunctions.net/qr-mark-guest-as-present', {
           guestId: searchResult.id, // Assuming the response contains the guest ID
         });
@@ -128,9 +75,9 @@ const QrScanner = () => {
           // Update the search result to reflect the present status
           setSearchResult(prev => ({
             ...prev,
-            present: isPresent, // Update the present status
+            isPresent: isPresent, // Update the present status
           }));
-
+  
           setEmail(''); // Clear email input
           setError(null);
         }
@@ -140,6 +87,7 @@ const QrScanner = () => {
       }
     }
   };
+  
 
   return (
     <div className="qr-scanner">
@@ -159,6 +107,7 @@ const QrScanner = () => {
         <input 
           type="email" 
           value={email} 
+          
           onChange={(e) => {
             setEmail(e.target.value); 
             console.log('Email input changed:', e.target.value); // Log email changes
@@ -169,40 +118,40 @@ const QrScanner = () => {
       </div>
 
       {searchResult && (
-        <div className="search-result">
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Table Number</th>
-                <th>Present</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{searchResult.name}</td>
-                <td>{searchResult.email}</td>
-                <td>{searchResult.tableNumber}</td>
-                <td>{searchResult.present ? 'Yes' : 'No'}</td>
-                <td>
-                  <button 
-                    onClick={markGuestPresentByEmail} 
-                    disabled={searchResult.present} // Disable if already present
-                  >
-                    Mark as Present
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
+  <div className="search-result">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Table Number</th>
+          <th>Present</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{searchResult.name}</td>
+          <td>{searchResult.email}</td>
+          <td>{searchResult.tableNumber}</td>
+          <td>{searchResult.present ? 'Yes' : 'No'}</td>
+          <td>
+            <button 
+              onClick={markGuestPresentByEmail} 
+              disabled={searchResult.present} // Disable if already present
+            >
+              Mark as Present
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+)}
 
-      <video ref={videoRef} style={{ display: 'none' }} />
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
 
+
+      
       {guestInfo && <div className="guest-info"><p>{guestInfo}</p></div>}
       {error && <p className="error">{error}</p>}
     </div>
