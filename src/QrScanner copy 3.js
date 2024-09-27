@@ -14,58 +14,23 @@ const QrScanner = () => {
   const canvasRef = useRef(null);
   const [scanning, setScanning] = useState(false);
 
-  useEffect(() => {
-    if (scanning) {
-      startCamera();
-    } else {
-      stopCamera();
-    }
-
-    return () => stopCamera(); // Cleanup on unmount
-  }, [scanning]);
-
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      videoRef.current.srcObject = stream;
-      videoRef.current.play();
-
-      // Start scanning for QR codes
-      requestAnimationFrame(scanQRCode);
-    } catch (err) {
-      console.error('Error accessing camera:', err);
-      setError('Could not access camera.');
+  // Start camera when the component mounts
+  const handleScan = (data) => {
+    if (data) {
+      setScannedQRCode(data);
+      alert(`QR Code scanned: ${data}`);
+      // Optionally, you can directly search for the guest after scanning
+      handleSearchByQRCode(data);
     }
   };
 
-  const stopCamera = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach(track => track.stop());
-      videoRef.current.srcObject = null;
-    }
-  };
-
-  const scanQRCode = () => {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-    
-    if (videoRef.current) {
-      context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-      const code = jsQR(imageData.data, canvas.width, canvas.height);
-
-      if (code) {
-        setScannedQRCode(code.data);
-        alert(`QR Code scanned: ${code.data}`);
-        handleSearchByQRCode(code.data);
-      }
-    }
-
-    requestAnimationFrame(scanQRCode); // Continue scanning
+  const handleError = (err) => {
+    console.error(err);
+    setError('Failed to scan QR code.');
   };
 
   const handleSearchByQRCode = async (qrCode) => {
+    // Implement the logic to search guest using the scanned QR code
     try {
       const response = await axios.post('YOUR_API_ENDPOINT_HERE', {
         qrCode,
@@ -162,23 +127,31 @@ const QrScanner = () => {
   return (
     <div className="qr-scanner">
       <h2>QR Scanner</h2>
-      <video ref={videoRef} style={{ width: '100%', display: scanning ? 'block' : 'none' }} />
-      <canvas ref={canvasRef} style={{ display: 'none' }} width="640" height="480" />
-      <button onClick={() => setScanning(prev => !prev)}>
-        {scanning ? 'Stop Scanning' : 'Start Scanning'}
-      </button>
+      <QrScanner
+        delay={300}
+        onError={handleError}
+        onScan={handleScan}
+        style={{ width: '100%' }}
+      />
       <div className="upload-section">
         <input type="file" accept="image/*" onChange={handleFileUpload} />
         {selectedFile && <p>Uploaded File: {selectedFile.name}</p>}
       </div>
 
-      {scannedQRCode && <p>Scanned QR Code: {scannedQRCode}</p>}
+      {scannedQRCode && (
+        <div>
+          <p>Scanned QR Code: {scannedQRCode}</p>
+        </div>
+      )}
 
       <div className="email-search">
         <input 
           type="email" 
           value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
+          onChange={(e) => {
+            setEmail(e.target.value); 
+            console.log('Email input changed:', e.target.value); // Log email changes
+          }} 
           placeholder="Enter guest email" 
         />
         <button onClick={handleEmailSearch}>Search Guest</button>
@@ -215,6 +188,9 @@ const QrScanner = () => {
           </table>
         </div>
       )}
+
+      <video ref={videoRef} style={{ display: 'none' }} />
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
 
       {guestInfo && <div className="guest-info"><p>{guestInfo}</p></div>}
       {error && <p className="error">{error}</p>}
