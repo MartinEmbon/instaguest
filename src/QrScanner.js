@@ -53,13 +53,14 @@ const QrScanner = () => {
   const scanQRCode = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
-    
+  
     if (videoRef.current) {
       context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
       const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
       const code = jsQR(imageData.data, canvas.width, canvas.height);
-
-      if (code) {
+  
+      // Check if QR code is detected and not already processed
+      if (code && scannedQRCode !== code.data) {
         setScannedQRCode(code.data);
         setEmail(code.data); // Populate the email input with the scanned QR code
         setAlertMessage(`QR Code scanned: ${code.data}`);
@@ -69,17 +70,20 @@ const QrScanner = () => {
           setAlertMessage('');
         }, 3000);
         
+        // Invoke search only if the scanned QR code is valid
         handleSearchByQRCode(code.data);
-
+        
         // Stop scanning and close the camera
         setScanning(false); // Close the camera after QR code capture
       }
     }
-
+  
     requestAnimationFrame(scanQRCode); // Continue scanning
   };
-
+  
   const handleSearchByQRCode = async (qrCode) => {
+    if (!qrCode) return; // Guard clause to ensure QR code is valid
+
     try {
       const response = await axios.post('https://us-central1-moonlit-sphinx-400613.cloudfunctions.net/qr-find-guest-by-email', {
         qrCode,
