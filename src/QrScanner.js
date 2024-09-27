@@ -20,7 +20,7 @@ const QrScannerComponent = () => {
       qrScannerRef.current = new QrScanner(videoRef.current, (result) => {
         setScannedQRCode(result);
         setEmail(result); // Populate the email input with the scanned QR code
-        displayAlert(`QR Code scanned: ${result}`);
+        // displayAlert(`QR Code scanned: ${result}`);
         handleSearchByQRCode(result);
       });
       qrScannerRef.current.start(); // Start scanning
