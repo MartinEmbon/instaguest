@@ -10,9 +10,11 @@ const QrScanner = () => {
   const [searchResult, setSearchResult] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [scannedQRCode, setScannedQRCode] = useState('');
+  const [scanning, setScanning] = useState(false);
+  const [alertMessage, setAlertMessage] = useState(''); // New state for alert messages
+
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [scanning, setScanning] = useState(false);
 
   useEffect(() => {
     if (scanning) {
@@ -27,12 +29,11 @@ const QrScanner = () => {
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: { exact: 'environment' } // Request the back camera
-        },
+        video: { facingMode: { exact: 'environment' } }, // Request the back camera
       });
       videoRef.current.srcObject = stream;
       videoRef.current.play();
+  
       // Start scanning for QR codes
       requestAnimationFrame(scanQRCode);
     } catch (err) {
@@ -60,7 +61,13 @@ const QrScanner = () => {
 
       if (code) {
         setScannedQRCode(code.data);
-        alert(`QR Code scanned: ${code.data}`);
+        setAlertMessage(`QR Code scanned: ${code.data}`);
+        
+        // Clear the alert after 3 seconds
+        setTimeout(() => {
+          setAlertMessage('');
+        }, 3000);
+        
         handleSearchByQRCode(code.data);
       }
     }
@@ -105,7 +112,12 @@ const QrScanner = () => {
 
         if (code) {
           setScannedQRCode(code.data);
-          alert(`QR Code scanned: ${code.data}`);
+          setAlertMessage(`QR Code scanned: ${code.data}`);
+          
+          // Clear the alert after 3 seconds
+          setTimeout(() => {
+            setAlertMessage('');
+          }, 3000);
         } else {
           setError('No QR code found in the image.');
         }
@@ -119,6 +131,8 @@ const QrScanner = () => {
       const response = await axios.post('https://us-central1-moonlit-sphinx-400613.cloudfunctions.net/qr-find-guest-by-email', {
         email,
       });
+      console.log('API Response:', response.data);
+
       if (response.status === 200 && response.data) {
         setSearchResult(response.data);
         setError(null);
@@ -156,7 +170,7 @@ const QrScanner = () => {
       <h2>QR Scanner</h2>
       <video ref={videoRef} style={{ width: '100%', display: scanning ? 'block' : 'none' }} />
       <canvas ref={canvasRef} style={{ display: 'none' }} width="640" height="480" />
-      <button onClick={() => setScanning(prev => !prev)} disabled={scanning}>
+      <button onClick={() => setScanning(prev => !prev)}>
         {scanning ? 'Stop Scanning' : 'Start Scanning'}
       </button>
       <div className="upload-section">
@@ -165,6 +179,8 @@ const QrScanner = () => {
       </div>
 
       {scannedQRCode && <p>Scanned QR Code: {scannedQRCode}</p>}
+      
+      {alertMessage && <p className="alert">{alertMessage}</p>} {/* Display alert message */}
 
       <div className="email-search">
         <input 
