@@ -1,150 +1,144 @@
+/* qrscanner.css */
+
 .qr-scanner-page {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .qr-scanner-page h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .qr-scanner-page label {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    display: block;
-    color: #333;
-  }
-  
-  .qr-scanner-page input[type="file"] {
-    margin: 20px 0;
-    padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 4px;
-    background-color: #fff;
-    cursor: pointer;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .qr-scanner-page .scanned-image {
-    margin-top: 20px;
-  }
-  
-  .qr-scanner-page .scanned-image img {
-    border: 2px solid #333;
-    border-radius: 8px;
-  }
-  
-  .qr-scanner-page .guest-info {
-    margin-top: 30px;
-    padding: 15px;
-    background-color: #e7f3ff;
-    border-radius: 8px;
-    text-align: left;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .qr-scanner-page .guest-info h3 {
-    font-size: 20px;
-    margin-bottom: 15px;
-    color: #0073e6;
-  }
-  
-  .qr-scanner-page .guest-info p {
-    margin: 5px 0;
-    font-size: 16px;
-    color: #333;
-  }
-  
-  .qr-scanner-page .guest-info p strong {
-    color: #0073e6;
-  }
-  
-  .qr-scanner-page p.error {
-    color: red;
-    font-size: 16px;
-    margin-top: 20px;
-  }
-  
-  .qr-scanner-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 20px auto;
-  }
-  
-  .guest-info {
-    margin-top: 20px;
-    color: green;
-    font-weight: bold;
-  }
-  
-  .error {
-    margin-top: 20px;
-    color: red;
-  }
-  .qr-scanner {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically */
-    height: 100vh; /* Full viewport height */
-    padding: 20px; /* Add some padding */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for the container */
-    border-radius: 8px; /* Rounded corners */
-    background-color: #ffffff; /* White background */
-  }
-  
-  h2 {
-    margin-bottom: 20px; /* Spacing below the heading */
-  }
-  
-  .email-search {
-    display: flex;
-    align-items: center; /* Center items vertically */
-    margin-bottom: 20px; /* Spacing below the input */
-  }
-  
-  .email-search input {
-    padding: 10px; /* Padding inside the input */
-    border: 1px solid #ccc; /* Light gray border */
-    border-radius: 4px; /* Rounded corners */
-    margin-right: 10px; /* Spacing between input and button */
-    width: 250px; /* Fixed width for input */
-  }
-  
-  .email-search button {
-    padding: 10px 15px; /* Padding inside the button */
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white; /* White text */
-    border: none; /* Remove border */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s; /* Transition effect */
-  }
-  
-  .email-search button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-  }
-  
-  .search-result {
-    margin-bottom: 20px; /* Spacing below search result */
-    text-align: center; /* Center text */
-  }
-  
-  .guest-info {
-    margin-bottom: 20px; /* Spacing below guest info */
-  }
-  
-  .error {
-    color: red; /* Red text for errors */
-  }
-  
+  max-width: 600px;                             /* Limit the max width of the QR scanner page */
+  margin: 20px auto;                            /* Center the page with top margin */
+  padding: 20px;                                /* Padding inside the container */
+  background-color: #f9f9f9;                    /* Light background color */
+  border-radius: 8px;                           /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);   /* Subtle shadow effect */
+  text-align: center;                           /* Center text alignment */
+  display: flex;                                /* Flexbox layout */
+  flex-direction: column;                       /* Stack elements vertically */
+  align-items: center;                          /* Center items horizontally */
+ 
+
+}
+
+/* Header styles */
+.qr-scanner-page h2 {
+  font-size: 24px;                              /* Header font size */
+  margin-bottom: 20px;                          /* Spacing below the header */
+  color: #333;                                  /* Dark color for header text */
+  font-family: 'Arial', sans-serif;             /* Font family */
+}
+
+/* Label styles */
+.qr-scanner-page label {
+  font-size: 18px;                              /* Label font size */
+  font-weight: bold;                            /* Bold labels */
+  margin-bottom: 10px;                          /* Spacing below labels */
+  display: block;                               /* Block display */
+  color: #333;                                  /* Dark color for labels */
+}
+
+/* File input styles */
+.qr-scanner-page input[type="file"] {
+  margin: 20px 0;                              /* Vertical spacing */
+  padding: 10px;                               /* Padding inside input */
+  border: 2px solid #ddd;                      /* Light border */
+  border-radius: 4px;                          /* Rounded corners */
+  background-color: #fff;                      /* White background */
+  cursor: pointer;                             /* Pointer cursor */
+  font-family: 'Arial', sans-serif;             /* Font family */
+}
+
+/* Styles for scanned image */
+.qr-scanner-page .scanned-image {
+  margin-top: 20px;                            /* Spacing above scanned image */
+}
+
+.qr-scanner-page .scanned-image img {
+  border: 2px solid #333;                       /* Dark border around image */
+  border-radius: 8px;                          /* Rounded corners for images */
+}
+
+/* Guest info box styles */
+.qr-scanner-page .guest-info {
+  margin-top: 30px;                            /* Space above guest info */
+  padding: 15px;                               /* Padding inside guest info */
+  background-color: #e7f3ff;                   /* Light blue background */
+  border-radius: 8px;                          /* Rounded corners */
+  text-align: left;                            /* Left-align text */
+  font-family: 'Arial', sans-serif;             /* Font family */
+}
+
+/* Guest info heading styles */
+.qr-scanner-page .guest-info h3 {
+  font-size: 20px;                             /* Heading font size */
+  margin-bottom: 15px;                         /* Spacing below heading */
+  color: #0073e6;                              /* Dark blue color */
+}
+
+/* Paragraph styles inside guest info */
+.qr-scanner-page .guest-info p {
+  margin: 5px 0;                              /* Vertical spacing */
+  font-size: 16px;                             /* Font size */
+  color: #333;                                 /* Dark color */
+}
+
+.qr-scanner-page .guest-info p strong {
+  color: #0073e6;                              /* Strong text color */
+}
+
+/* Error message styles */
+.qr-scanner-page p.error {
+  color: red;                                  /* Red color for error messages */
+  font-size: 16px;                             /* Font size */
+  margin-top: 20px;                           /* Top margin */
+}
+
+/* Email search styles */
+.email-search {
+  display: flex;                               /* Flexbox layout */
+  align-items: center;                        /* Center items vertically */
+  margin-bottom: 20px;                        /* Spacing below the input */
+}
+
+/* Input styles for email search */
+.email-search input {
+  padding: 10px;                              /* Padding inside input */
+  border: 1px solid #ccc;                    /* Light gray border */
+  border-radius: 4px;                        /* Rounded corners */
+  margin-right: 10px;                         /* Spacing between input and button */
+  width: 250px;                               /* Fixed width for input */
+}
+
+/* Button styles for email search */
+.email-search button {
+  padding: 10px 15px;                        /* Padding inside the button */
+  background-color: #007bff;                 /* Blue background color */
+  color: white;                               /* White text */
+  border: none;                               /* Remove border */
+  border-radius: 4px;                        /* Rounded corners */
+  cursor: pointer;                            /* Pointer cursor */
+  transition: background-color 0.3s;         /* Smooth transition on hover */
+}
+
+/* Button hover effect */
+.email-search button:hover {
+  background-color: #0056b3;                 /* Darker blue on hover */
+}
+
+/* Search result text styles */
+.search-result {
+  margin-bottom: 20px;                        /* Spacing below search result */
+  text-align: center;                        /* Center text */
+}
+
+/* Guest info styles for errors */
+.guest-info {
+  margin-bottom: 20px;                       /* Spacing below guest info */
+  color: green;                              /* Green color for success messages */
+  font-weight: bold;                         /* Bold text */
+}
+
+/* Error message styles */
+.error {
+  color: red;                                /* Red color for errors */
+}
+
+.qr-scanner{
+  max-width: 400px;
+  margin: auto;
+}

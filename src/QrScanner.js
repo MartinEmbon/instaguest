@@ -56,11 +56,14 @@ const QrScanner = () => {
   
       if (code) {
         setScannedQRCode(code.data);
-        alert(`QR Code scanned: ${code.data}`);
+        // alert(`QR Code scanned: ${code.data}`);
         // Optionally, you can directly search for the guest after scanning
         handleSearchByQRCode(code.data);
         setEmail(code.data);
         // Stop the camera
+
+         // Automatically execute the search when a QR code is scanned
+      handleSearchByQRCode(code.data);
         stopCamera();
       } else {
         requestAnimationFrame(scanQRCode); // Keep scanning

@@ -1,40 +1,61 @@
+/* ListEvents.css */
+
 .event-list {
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .event-list table {
-    width: 100%;
-    margin: 20px 0;
-    border-collapse: collapse;
-  }
-  
-  .event-list th,
-  .event-list td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: left;
-  }
-  
-  .event-list th {
-    background-color: #f4f4f4;
-  }
-  
-  .buttons {
-    margin: 20px 0;
-  }
-  
-  .buttons button {
-    margin-right: 10px;
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .buttons button:hover {
-    background-color: #0056b3;
-  }
-  
+  padding: 20px;                      /* Padding around the event list */
+  text-align: center;                 /* Center the text */
+  background-color: #f9f9f9;         /* Light background for the event list */
+  max-width: 1200px;          /* Limit the width of the form */
+  margin: auto;
+}
+
+/* Container for the scrollable table */
+.table-container {
+  overflow-x: auto;                   /* Allow horizontal scrolling */
+  margin: 20px 0;                    /* Space around the table container */
+  border: 1px solid #d9d9d9;         /* Light border for the table container */
+  border-radius: 5px;                 /* Rounded corners */
+  background-color: #fff;            /* White background for the table */
+}
+
+/* Table styles */
+.event-list table {
+  width: 100%;                        /* Full width for the table */
+  border-collapse: collapse;          /* Remove gaps between table cells */
+}
+
+/* Table header and data cell styles */
+.event-list th,
+.event-list td {
+  border: 1px solid #ccc;             /* Light border for cells */
+  padding: 10px;                      /* Padding inside cells */
+  text-align: left;                   /* Left align text */
+}
+
+/* Header cell styles */
+.event-list th {
+  background-color: #e7cba8;          /* Light golden background for header */
+  color: #4a4a4a;                     /* Dark text for headers */
+  font-weight: bold;                  /* Bold text for headers */
+}
+
+/* Button container styles */
+.buttons {
+  margin: 20px 0;                    /* Space around buttons */
+}
+
+/* Button styles */
+.buttons button {
+  margin-right: 10px;                 /* Space between buttons */
+  padding: 10px 15px;                 /* Padding inside buttons */
+  background-color: #c8a46d;          /* Golden button color */
+  color: white;                       /* White text color */
+  border: none;                       /* No border */
+  border-radius: 5px;                 /* Rounded corners */
+  cursor: pointer;                     /* Pointer cursor on hover */
+  transition: background-color 0.3s;  /* Smooth background transition */
+}
+
+/* Button hover effect */
+.buttons button:hover {
+  background-color: #b79d6c;          /* Darker shade on hover */
+}

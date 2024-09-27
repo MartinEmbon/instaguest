@@ -1,19 +1,44 @@
+/* Header.css */
+
 .header {
-    display: flex;
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
-    background-color: #007bff; /* Primary color */
-    padding: 20px; /* Padding around the header */
-    color: white; /* White text color */
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: space-between; /* Space between logo and title */
+  background-color: #f7f7f7; /* Light grey background for a clean look */
+  padding: 20px; /* Padding around the header */
+  color: #333; /* Dark grey text color for contrast */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Logo styling */
+.logo img {
+  max-height: 50px; /* Set logo height */
+  margin-right: 20px; /* Space between logo and title */
+}
+
+/* Title styling */
+.title {
+  font-size: 24px; /* Larger font size for the title */
+  margin: 0; /* Remove default margin */
+  color: #b8860b; /* Golden color for the title */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header {
+      flex-direction: column; /* Stack logo and title on smaller screens */
+      align-items: center; /* Center items */
+      padding: 15px; /* Adjust padding */
   }
-  
-  .logo img {
-    max-height: 50px; /* Set logo height */
-    margin-right: 20px; /* Space between logo and title */
-  }
-  
+
   .title {
-    font-size: 24px; /* Larger font size for the title */
-    margin: 0; /* Remove default margin */
+      font-size: 20px; /* Smaller font size for mobile */
+      text-align: center; /* Center title text */
+      margin-top: 10px; /* Space above title on mobile */
   }
-  
+
+  .logo img {
+      margin-right: 0; /* Remove margin on mobile */
+      margin-bottom: 10px; /* Add space below logo on mobile */
+  }
+}

@@ -49,6 +49,7 @@ const ListGuests = () => {
 
       {loading && <p>Loading guests...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
+      <div className="table-container">  {/* New container for horizontal scrolling */}
 
       {guests.length > 0 && (
         <table>
@@ -73,6 +74,8 @@ const ListGuests = () => {
         </table>
       )}
     </div>
+    </div>
+
   );
 };
 

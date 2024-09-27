@@ -4,37 +4,16 @@
 .app {
   font-family: Arial, sans-serif;
   padding: 20px;
+  background-color: #f9f9f9; /* Light background for a clean look */
+  color: #333; /* Dark text for better readability */
 }
 
 /* Navigation bar styles */
 .navbar {
   margin-bottom: 20px; /* Space below the navbar */
-}
-
-.navbar ul {
-  list-style: none; /* Remove bullet points */
-  padding: 0; /* Remove default padding */
-}
-
-.navbar li {
-  display: inline; /* Horizontal layout */
-  margin-right: 15px; /* Space between links */
-}
-
-.navbar a {
-  text-decoration: none; /* Remove underline */
-  color: #007bff; /* Link color */
-}
-
-.navbar a:hover {
-  text-decoration: underline; /* Underline on hover */
-}
-
-/* App.css or navbar-specific CSS file */
-.navbar {
   display: flex;
   justify-content: center; /* Center horizontally */
-  background-color: #007bff; /* Background color */
+  background-color: #333; /* Dark background for the navbar */
   padding: 10px 0; /* Vertical padding */
 }
 
@@ -51,11 +30,97 @@
 
 .navbar a {
   text-decoration: none; /* Remove underline from links */
-  color: white; /* Link color */
+  color: #fff; /* White link color for contrast */
   font-weight: bold; /* Bold font */
   font-size: 18px; /* Font size */
+  transition: color 0.3s; /* Smooth transition for hover effect */
 }
 
 .navbar a:hover {
+  color: #ffcc00; /* Gold color on hover for emphasis */
   text-decoration: underline; /* Underline on hover */
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .navbar li {
+    margin: 0 10px; /* Reduce spacing on smaller screens */
+  }
+
+  .navbar a {
+    font-size: 16px; /* Slightly smaller font size */
+  }
+}
+
+/* Additional styles for content */
+h2 {
+  color: #333; /* Header color */
+  margin-bottom: 10px; /* Space below headers */
+}
+
+.qr-scanner {
+  background-color: #fff; /* White background for the QR scanner section */
+  border: 1px solid #ccc; /* Light border for definition */
+  border-radius: 5px; /* Rounded corners */
+  padding: 20px; /* Padding around content */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Input and button styles */
+input[type="email"],
+input[type="file"],
+button {
+  width: 100%; /* Full width inputs */
+  padding: 10px; /* Padding for inputs and buttons */
+  margin-top: 10px; /* Space above elements */
+  border: 1px solid #ccc; /* Border for inputs */
+  border-radius: 5px; /* Rounded corners */
+  transition: border-color 0.3s; /* Smooth transition for focus effect */
+}
+
+input[type="email"]:focus,
+input[type="file"]:focus,
+button:focus {
+  border-color: #ffcc00; /* Gold border on focus */
+  outline: none; /* Remove default outline */
+}
+
+button {
+  background-color: #b8860b; /* Gold button background color */
+  color: #fff; /* Button text color */
+  font-size: 16px; /* Button font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+button:hover {
+  background-color: #8b6914; /* Darker gold on hover */
+}
+
+/* Search result styles */
+.search-result {
+  margin-top: 20px; /* Space above search results */
+  background-color: #f1f1f1; /* Light grey background for results */
+  padding: 10px; /* Padding around results */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.table {
+  width: 100%; /* Full width table */
+  border-collapse: collapse; /* Collapse borders */
+}
+
+.table th,
+.table td {
+  padding: 10px; /* Padding inside table cells */
+  text-align: left; /* Left align text */
+  border-bottom: 1px solid #ddd; /* Light border for rows */
+}
+
+.table th {
+  background-color: #f2f2f2; /* Light grey background for headers */
+}
+
+.error {
+  color: red; /* Error text color */
 }

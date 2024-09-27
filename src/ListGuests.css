@@ -2,34 +2,53 @@
 
 /* Container for the guest list */
 .guest-list {
-    max-width: 600px;          /* Limit the width of the guest list */
-    margin: 20px auto;        /* Center the guest list */
-    padding: 20px;            /* Add padding */
-    border: 1px solid #ccc;   /* Light border */
-    border-radius: 8px;       /* Rounded corners */
-    background-color: #fff;   /* White background */
-  }
-  
-  /* Guest list heading */
-  .guest-list h2 {
-    text-align: center;        /* Center the heading */
-    margin-bottom: 20px;      /* Space below the heading */
-    color: #333;              /* Dark text color */
-  }
-  
-  /* Table styling */
-  .guest-list table {
-    width: 100%;              /* Full width for the table */
-    border-collapse: collapse; /* Remove gaps between table cells */
-  }
-  
-  .guest-list th, .guest-list td {
-    border: 1px solid #ccc;   /* Light border for table cells */
-    padding: 10px;            /* Padding inside table cells */
-    text-align: left;         /* Left align text */
-  }
-  
-  .guest-list th {
-    background-color: #f2f2f2; /* Light gray background for header */
-  }
-  
+  max-width: 600px;          /* Limit the width of the guest list */
+  margin: 20px auto;        /* Center the guest list */
+  padding: 20px;            /* Add padding */
+  border: 1px solid #ccc;   /* Light border */
+  border-radius: 8px;       /* Rounded corners */
+  background-color: #fff;   /* White background */
+}
+
+/* Guest list heading */
+.guest-list h2 {
+  text-align: center;        /* Center the heading */
+  margin-bottom: 20px;      /* Space below the heading */
+  color: #333;              /* Dark text color */
+}
+
+/* Container for the table with horizontal scrolling */
+.table-container {
+  overflow-x: auto;         /* Allow horizontal scrolling */
+  margin-top: 10px;        /* Space above the table */
+}
+
+/* Table styling */
+.guest-list table {
+  width: 100%;              /* Full width for the table */
+  border-collapse: collapse; /* Remove gaps between table cells */
+}
+
+/* Table header and cell styles */
+.guest-list th,
+.guest-list td {
+  border: 1px solid #ccc;   /* Light border for table cells */
+  padding: 10px;            /* Padding inside table cells */
+  text-align: left;         /* Left align text */
+}
+
+/* Table header styling */
+.guest-list th {
+  background-color: #f2f2f2; /* Light gray background for header */
+  color: #b8860b;            /* Gold color for header text */
+}
+
+/* Alternate row color for better readability */
+.guest-list tr:nth-child(even) {
+  background-color: #f9f9f9; /* Light grey for even rows */
+}
+
+/* Hover effect for table rows */
+.guest-list tr:hover {
+  background-color: #e0e0e0; /* Slightly darker grey on hover */
+}

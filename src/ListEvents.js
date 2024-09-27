@@ -55,32 +55,36 @@ const ListEvents = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {events.length > 0 && (
-        <table>
-          <thead>
-            <tr>
-              <th>Event ID</th>
-              <th>Event Name</th>
-              <th>Owner</th>
-              <th>Location</th>
-              <th>Date</th>
-              <th>Number of Guests</th>
-              <th>Observations</th>
-            </tr>
-          </thead>
-          <tbody>
-            {events.map((event) => (
-              <tr key={event.eventId}>
-                <td>{event.eventId}</td>
-                <td>{event.eventName || "N/A" }</td>
-                <td>{event.owner || "N/A"}</td> {/* Display "N/A" if owner is not available */}
-                <td>{event.location || "N/A"}</td> {/* Display "N/A" if location is not available */}
-                <td>{event.date}</td>
-                <td>{event.guestCount}</td>
-                <td>{event.observation || "N/A"}</td> {/* Display "N/A" if observation is not available */}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+       
+   
+       <div class="table-container">
+         <table>
+           <thead>
+             <tr>
+               <th>Event ID</th>
+               <th>Event Name</th>
+               <th>Owner</th>
+               <th>Location</th>
+               <th>Date</th>
+               <th>Number of Guests</th>
+               <th>Observations</th>
+             </tr>
+           </thead>
+           <tbody>
+             {events.map((event) => (
+               <tr key={event.eventId}>
+                 <td>{event.eventId}</td>
+                 <td>{event.eventName || "N/A"}</td>
+                 <td>{event.owner || "N/A"}</td> {/* Display "N/A" if owner is not available */}
+                 <td>{event.location || "N/A"}</td> {/* Display "N/A" if location is not available */}
+                 <td>{event.date}</td>
+                 <td>{event.guestCount}</td>
+                 <td>{event.observation || "N/A"}</td> {/* Display "N/A" if observation is not available */}
+               </tr>
+             ))}
+           </tbody>
+         </table>
+       </div>
       )}
     </div>
   );

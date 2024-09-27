@@ -2,61 +2,61 @@
 
 /* Container for the guest form */
 .guest-form {
-    max-width: 400px;          /* Limit the width of the form */
-    margin: 0 auto;           /* Center the form */
-    padding: 20px;            /* Add padding around the form */
-    border: 1px solid #ccc;   /* Light border for the form */
-    border-radius: 8px;       /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
-    background-color: #fff;   /* White background */
-  }
-  
-  /* Form heading */
-  .guest-form h2 {
-    text-align: center;        /* Center the heading text */
-    margin-bottom: 20px;      /* Space below the heading */
-    color: #333;              /* Dark text color for readability */
-  }
-  
-  /* Form input fields */
-  .guest-form input {
-    width: 100%;              /* Full width for input fields */
-    padding: 10px;            /* Padding inside the input fields */
-    margin: 10px 0;          /* Vertical spacing between inputs */
-    border: 1px solid #ccc;   /* Light border around inputs */
-    border-radius: 4px;       /* Rounded corners for inputs */
-    font-size: 16px;          /* Increase font size for better readability */
-  }
-  
-  /* Submit button styling */
-  .guest-form button {
-    width: 100%;              /* Full width for the button */
-    padding: 10px;            /* Padding inside the button */
-    margin-top: 10px;         /* Space above the button */
-    border: none;             /* No border */
-    border-radius: 4px;       /* Rounded corners */
-    background-color: #28a745; /* Green background */
-    color: white;             /* White text color */
-    font-size: 16px;          /* Increase font size for readability */
-    cursor: pointer;          /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth background transition */
-  }
-  
-  /* Button hover effect */
-  .guest-form button:hover {
-    background-color: #218838; /* Darker green on hover */
-  }
-  
-  /* QR code section */
-  .qr-code-section {
-    margin-top: 20px;         /* Space above the QR code section */
-    text-align: center;        /* Center the QR code */
-  }
-  
-  /* Error message styling */
-  .guest-form p {
-    color: red;               /* Red color for error messages */
-    text-align: center;       /* Center the error message */
-    margin-top: 10px;         /* Space above the error message */
-  }
-  
+  max-width: 400px;          /* Limit the width of the form */
+  margin: 0 auto;           /* Center the form */
+  padding: 20px;            /* Add padding around the form */
+  border: 1px solid #ccc;   /* Light border for the form */
+  border-radius: 8px;       /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  background-color: #fff;   /* White background */
+}
+
+/* Form heading */
+.guest-form h2 {
+  text-align: center;        /* Center the heading text */
+  margin-bottom: 20px;      /* Space below the heading */
+  color: #333;              /* Dark text color for readability */
+}
+
+/* Form input fields */
+.guest-form input {
+  width: 100%;              /* Full width for input fields */
+  padding: 10px;            /* Padding inside the input fields */
+  margin: 10px 0;          /* Vertical spacing between inputs */
+  border: 1px solid #ccc;   /* Light border around inputs */
+  border-radius: 4px;       /* Rounded corners for inputs */
+  font-size: 16px;          /* Increase font size for better readability */
+  box-sizing: border-box;
+}
+
+/* Submit button styling */
+.guest-form button {
+  width: 100%;              /* Full width for the button */
+  padding: 10px;            /* Padding inside the button */
+  margin-top: 10px;         /* Space above the button */
+  border: none;             /* No border */
+  border-radius: 4px;       /* Rounded corners */
+  background-color: #b8860b; /* Gold background */
+  color: white;             /* White text color */
+  font-size: 16px;          /* Increase font size for readability */
+  cursor: pointer;          /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth background transition */
+}
+
+/* Button hover effect */
+.guest-form button:hover {
+  background-color: #8b6914; /* Darker gold on hover */
+}
+
+/* QR code section */
+.qr-code-section {
+  margin-top: 20px;         /* Space above the QR code section */
+  text-align: center;        /* Center the QR code */
+}
+
+/* Error message styling */
+.guest-form p {
+  color: red;               /* Red color for error messages */
+  text-align: center;       /* Center the error message */
+  margin-top: 10px;         /* Space above the error message */
+}
