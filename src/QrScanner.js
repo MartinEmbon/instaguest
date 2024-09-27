@@ -14,25 +14,77 @@ const QrScanner = () => {
   const canvasRef = useRef(null);
   const [scanning, setScanning] = useState(false);
 
-  // Start camera when the component mounts
-  const handleScan = (data) => {
-    if (data) {
-      setScannedQRCode(data);
-      alert(`QR Code scanned: ${data}`);
-      // Optionally, you can directly search for the guest after scanning
-      handleSearchByQRCode(data);
+  useEffect(() => {
+    if (scanning) {
+      startCamera();
+    } else {
+      stopCamera();
+    }
+
+    return () => stopCamera(); // Cleanup on unmount
+  }, [scanning]);
+
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { exact: 'environment' } // Request the back camera
+        },
+      });
+      videoRef.current.srcObject = stream;
+      videoRef.current.play();
+  
+      // Start scanning for QR codes
+      requestAnimationFrame(scanQRCode);
+    } catch (err) {
+      console.error('Error accessing camera:', err);
+      setError('Could not access camera.');
     }
   };
 
-  const handleError = (err) => {
-    console.error(err);
-    setError('Failed to scan QR code.');
+  
+
+  const scanQRCode = () => {
+    if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
+      const canvas = canvasRef.current;
+      canvas.height = videoRef.current.videoHeight;
+      canvas.width = videoRef.current.videoWidth;
+      const context = canvas.getContext('2d');
+      context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, canvas.width, canvas.height);
+  
+      if (code) {
+        setScannedQRCode(code.data);
+        // alert(`QR Code scanned: ${code.data}`);
+        // Optionally, you can directly search for the guest after scanning
+        handleSearchByQRCode(code.data);
+        setEmail(code.data);
+        // Stop the camera
+
+         // Automatically execute the search when a QR code is scanned
+      handleSearchByQRCode(code.data);
+        stopCamera();
+      } else {
+        requestAnimationFrame(scanQRCode); // Keep scanning
+      }
+    } else {
+      requestAnimationFrame(scanQRCode); // Keep scanning
+    }
+  };
+
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject;
+      const tracks = stream.getTracks();
+      tracks.forEach(track => track.stop()); // Stop all tracks
+      videoRef.current.srcObject = null; // Clear the video source
+    }
   };
 
   const handleSearchByQRCode = async (qrCode) => {
-    // Implement the logic to search guest using the scanned QR code
     try {
-      const response = await axios.post('YOUR_API_ENDPOINT_HERE', {
+      const response = await axios.post('https://us-central1-moonlit-sphinx-400613.cloudfunctions.net/qr-find-guest-by-email', {
         qrCode,
       });
       if (response.status === 200 && response.data) {
@@ -127,36 +179,40 @@ const QrScanner = () => {
   return (
     <div className="qr-scanner">
       <h2>QR Scanner</h2>
-      <QrScanner
-        delay={300}
-        onError={handleError}
-        onScan={handleScan}
-        style={{ width: '100%' }}
+      <video 
+        ref={videoRef} 
+        style={{ width: '100%', display: scanning ? 'block' : 'none' }} 
       />
+      <canvas 
+        ref={canvasRef} 
+        style={{ display: 'none' }} 
+        width="640" 
+        height="480" 
+      />
+      <button onClick={() => setScanning(prev => !prev)}>
+        {scanning ? 'Stop Scanning' : 'Start Scanning'}
+      </button>
       <div className="upload-section">
-        <input type="file" accept="image/*" onChange={handleFileUpload} />
+        <input 
+          type="file" 
+          accept="image/*" 
+          onChange={handleFileUpload} 
+        />
         {selectedFile && <p>Uploaded File: {selectedFile.name}</p>}
       </div>
-
-      {scannedQRCode && (
-        <div>
-          <p>Scanned QR Code: {scannedQRCode}</p>
-        </div>
-      )}
-
+  
+      {scannedQRCode && <p>Scanned QR Code: {scannedQRCode}</p>}
+  
       <div className="email-search">
         <input 
           type="email" 
           value={email} 
-          onChange={(e) => {
-            setEmail(e.target.value); 
-            console.log('Email input changed:', e.target.value); // Log email changes
-          }} 
+          onChange={(e) => setEmail(e.target.value)} 
           placeholder="Enter guest email" 
         />
         <button onClick={handleEmailSearch}>Search Guest</button>
       </div>
-
+  
       {searchResult && (
         <div className="search-result">
           <table>
@@ -188,11 +244,8 @@ const QrScanner = () => {
           </table>
         </div>
       )}
-
-      <video ref={videoRef} style={{ display: 'none' }} />
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
-
-      {guestInfo && <div className="guest-info"><p>{guestInfo}</p></div>}
+  
+      {guestInfo && <div className="guest-info"><p>{JSON.stringify(guestInfo)}</p></div>}
       {error && <p className="error">{error}</p>}
     </div>
   );
