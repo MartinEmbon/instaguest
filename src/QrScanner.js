@@ -11,6 +11,7 @@ const QrScannerComponent = () => {
   const [searchResult, setSearchResult] = useState(null);
   const [scannedQRCode, setScannedQRCode] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
+  const [showScanAnotherButton, setShowScanAnotherButton] = useState(false);
 
   const videoRef = useRef(null);
   const qrScannerRef = useRef(null); // Reference for the QR Scanner instance
@@ -32,12 +33,29 @@ const QrScannerComponent = () => {
   //   }
   // }, []);
 
+//v2
+  // useEffect(() => {
+  //   if (videoRef.current) {
+  //     qrScannerRef.current = new QrScanner(videoRef.current, (result) => {
+  //       setScannedQRCode(result);
+  //       // Set email directly here; don't call handleSearchByQRCode
+  //       setEmail(result); // Populate the email input with the scanned QR code
+  //     });
+  //     qrScannerRef.current.start(); // Start scanning
+  
+  //     return () => {
+  //       qrScannerRef.current.stop(); // Stop scanning on cleanup
+  //       qrScannerRef.current.destroy(); // Clean up the scanner instance
+  //     };
+  //   }
+  // }, []);
   useEffect(() => {
     if (videoRef.current) {
       qrScannerRef.current = new QrScanner(videoRef.current, (result) => {
         setScannedQRCode(result);
-        // Set email directly here; don't call handleSearchByQRCode
         setEmail(result); // Populate the email input with the scanned QR code
+        setShowScanAnotherButton(true); // Show the scan another button
+        qrScannerRef.current.stop(); // Stop scanning after detecting a QR code
       });
       qrScannerRef.current.start(); // Start scanning
   
@@ -141,6 +159,18 @@ const handleSearchByQRCode = useCallback(async (qrCode) => {
 
       {scannedQRCode && <p>Scanned QR Code: {scannedQRCode}</p>}
       {alertMessage && <p className="alert">{alertMessage}</p>}
+
+      {showScanAnotherButton && (
+  <button onClick={() => {
+    setShowScanAnotherButton(false); // Hide the button
+    setScannedQRCode(''); // Clear the scanned QR code
+    setEmail(''); // Clear the email input
+    qrScannerRef.current.start(); // Restart the scanner
+  }}>
+    Scan Another
+  </button>
+)}
+
       
       <div className="email-search">
         <input 
