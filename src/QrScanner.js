@@ -26,10 +26,14 @@ const QrScanner = () => {
 
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { exact: 'environment' } // Request the back camera
+        },
+      });
       videoRef.current.srcObject = stream;
       videoRef.current.play();
-
+  
       // Start scanning for QR codes
       requestAnimationFrame(scanQRCode);
     } catch (err) {
