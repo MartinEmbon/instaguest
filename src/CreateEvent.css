@@ -1,0 +1,53 @@
+.create-event {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .create-event h2 {
+    text-align: center;
+  }
+  
+  .create-event form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .create-event label {
+    margin-bottom: 5px;
+  }
+  
+  .create-event input,
+  .create-event textarea {
+    margin-bottom: 15px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .create-event button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .create-event button:hover {
+    background-color: #0056b3;
+  }
+  
+  .success {
+    color: green;
+    text-align: center;
+  }
+  
+  .error {
+    color: red;
+    text-align: center;
+  }
+  

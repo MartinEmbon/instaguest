@@ -37,7 +37,13 @@ const AddGuest = () => {
       setLoading(false);
     } catch (error) {
       console.error("Error saving guest data:", error);
-      setError("Failed to save guest information.");
+      
+    // Check if the error response is a 404 (Event not found)
+    if (error.response && error.response.status === 404) {
+      setError("The event does not exist. Please check the event ID and try again.");
+    } else {
+      setError("Failed to save guest information. Please try again.");
+    }
       setLoading(false);
     }
   };
