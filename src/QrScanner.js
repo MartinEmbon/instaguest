@@ -10,36 +10,63 @@ const QrScanner = () => {
   const [searchResult, setSearchResult] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [scannedQRCode, setScannedQRCode] = useState('');
+  const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const [scanning, setScanning] = useState(false);
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
+  useEffect(() => {
+    if (scanning) {
+      startCamera();
+    } else {
+      stopCamera();
+    }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const image = new Image();
-      image.src = event.target.result;
-      image.onload = () => {
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-        canvas.width = image.width;
-        canvas.height = image.height;
-        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    return () => stopCamera(); // Cleanup on unmount
+  }, [scanning]);
 
-        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-        const code = jsQR(imageData.data, canvas.width, canvas.height);
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { exact: 'environment' } // Request the back camera
+        },
+      });
+      videoRef.current.srcObject = stream;
+      videoRef.current.play();
+  
+      // Start scanning for QR codes
+      requestAnimationFrame(scanQRCode);
+    } catch (err) {
+      console.error('Error accessing camera:', err);
+      setError('Could not access camera.');
+    }
+  };
 
-        if (code) {
-          setScannedQRCode(code.data);
-          setEmail(code.data); // Set the scanned email to the input field
-          handleSearchByQRCode(code.data); // Search guest by QR code
-        } else {
-          setError('No QR code found in the image.');
-        }
-      };
-    };
-    reader.readAsDataURL(file);
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach(track => track.stop());
+      videoRef.current.srcObject = null;
+    }
+  };
+
+  const scanQRCode = () => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+    
+    if (videoRef.current) {
+      context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, canvas.width, canvas.height);
+
+      if (code) {
+        setScannedQRCode(code.data);
+        alert(`QR Code scanned: ${code.data}`);
+        handleSearchByQRCode(code.data);
+      }
+    }
+
+    requestAnimationFrame(scanQRCode); // Continue scanning
   };
 
   const handleSearchByQRCode = async (qrCode) => {
@@ -59,6 +86,34 @@ const QrScanner = () => {
     }
   };
 
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const image = new Image();
+      image.src = event.target.result;
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = image.width;
+        canvas.height = image.height;
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, canvas.width, canvas.height);
+
+        if (code) {
+          setScannedQRCode(code.data);
+          alert(`QR Code scanned: ${code.data}`);
+        } else {
+          setError('No QR code found in the image.');
+        }
+      };
+    };
+    reader.readAsDataURL(file);
+  };
   const handleEmailSearch = async () => {
     try {
       const response = await axios.post('https://us-central1-moonlit-sphinx-400613.cloudfunctions.net/qr-find-guest-by-email', {
@@ -78,51 +133,42 @@ const QrScanner = () => {
     }
   };
 
+
+  // Function to mark guest as present by email using axios
   const markGuestPresentByEmail = async () => {
     if (searchResult) {
-      console.log('Searching for guest by email:', email); // Check if function is called
-
       try {
-        const response = await axios.post('https://us-central1-moonlit-sphinx-400613.cloudfunctions.net/qr-mark-guest-as-present', {
-          guestId: searchResult.id, // Assuming the response contains the guest ID
+        const response = await axios.post(`YOUR_API_ENDPOINT_TO_MARK_GUEST_PRESENT`, {
+          email: searchResult.email
         });
-
         if (response.status === 200) {
-          const isPresent = response.data.present; // This is the boolean returned from your API
           setGuestInfo(`Guest ${searchResult.name} marked as present.`);
-          
-          // Update the search result to reflect the present status
-          setSearchResult(prev => ({
-            ...prev,
-            present: isPresent, // Update the present status
-          }));
-
           setEmail(''); // Clear email input
-          setError(null);
+          setSearchResult(null); // Clear search result
+        } else {
+          setGuestInfo('Error marking guest as present.');
         }
       } catch (err) {
         console.error('Error marking guest as present:', err);
-        setError('Failed to mark guest as present.');
+        setError('Error marking guest as present.');
       }
     }
   };
   return (
     <div className="qr-scanner">
       <h2>QR Scanner</h2>
+      <video ref={videoRef} style={{ width: '100%', display: scanning ? 'block' : 'none' }} />
+      <canvas ref={canvasRef} style={{ display: 'none' }} width="640" height="480" />
+      <button onClick={() => setScanning(prev => !prev)}>
+        {scanning ? 'Stop Scanning' : 'Start Scanning'}
+      </button>
       <div className="upload-section">
-        <input 
-          type="file" 
-          accept="image/*" 
-          capture="environment" // This prompts the user to take a photo
-          onChange={handleFileUpload} 
-        />
+        <input type="file" accept="image/*" onChange={handleFileUpload} />
         {selectedFile && <p>Uploaded File: {selectedFile.name}</p>}
       </div>
-      
+
       {scannedQRCode && <p>Scanned QR Code: {scannedQRCode}</p>}
 
-      
-  
       <div className="email-search">
         <input 
           type="email" 
@@ -132,7 +178,7 @@ const QrScanner = () => {
         />
         <button onClick={handleEmailSearch}>Search Guest</button>
       </div>
-  
+
       {searchResult && (
         <div className="search-result">
           <table>
@@ -164,8 +210,8 @@ const QrScanner = () => {
           </table>
         </div>
       )}
-  
-      {guestInfo && <div className="guest-info"><p>{JSON.stringify(guestInfo)}</p></div>}
+
+      {guestInfo && <div className="guest-info"><p>{guestInfo}</p></div>}
       {error && <p className="error">{error}</p>}
     </div>
   );
