@@ -61,6 +61,7 @@ const QrScanner = () => {
 
       if (code) {
         setScannedQRCode(code.data);
+        setEmail(code.data); // Populate the email input with the scanned QR code
         setAlertMessage(`QR Code scanned: ${code.data}`);
         
         // Clear the alert after 3 seconds
@@ -112,6 +113,7 @@ const QrScanner = () => {
 
         if (code) {
           setScannedQRCode(code.data);
+          setEmail(code.data); // Populate the email input with the scanned QR code
           setAlertMessage(`QR Code scanned: ${code.data}`);
           
           // Clear the alert after 3 seconds
