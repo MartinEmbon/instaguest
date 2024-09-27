@@ -28,33 +28,34 @@ const QrScanner = () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
-          facingMode: { exact: 'environment' } // Request the back camera
+          facingMode: { exact: 'environment' },
         },
       });
       videoRef.current.srcObject = stream;
       videoRef.current.play();
-  
-      // Start scanning for QR codes
+
       requestAnimationFrame(scanQRCode);
     } catch (err) {
       console.error('Error accessing camera:', err);
       setError('Could not access camera.');
     }
   };
-
   const stopCamera = () => {
     if (videoRef.current && videoRef.current.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
+      const stream = videoRef.current.srcObject;
+      const tracks = stream.getTracks();
       tracks.forEach(track => track.stop());
       videoRef.current.srcObject = null;
     }
   };
 
+
   const scanQRCode = () => {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-    
-    if (videoRef.current) {
+    if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
+      const canvas = canvasRef.current;
+      canvas.height = videoRef.current.videoHeight;
+      canvas.width = videoRef.current.videoWidth;
+      const context = canvas.getContext('2d');
       context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
       const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
       const code = jsQR(imageData.data, canvas.width, canvas.height);
@@ -62,20 +63,28 @@ const QrScanner = () => {
       if (code) {
         setScannedQRCode(code.data);
         alert(`QR Code scanned: ${code.data}`);
+        
+        // Call the API with the scanned QR code
         handleSearchByQRCode(code.data);
+        
+        stopCamera();
+      } else {
+        requestAnimationFrame(scanQRCode);
       }
+    } else {
+      requestAnimationFrame(scanQRCode);
     }
-
-    requestAnimationFrame(scanQRCode); // Continue scanning
   };
+
 
   const handleSearchByQRCode = async (qrCode) => {
     try {
       const response = await axios.post('https://us-central1-moonlit-sphinx-400613.cloudfunctions.net/qr-find-guest-by-email', {
-        qrCode,
+        email: qrCode, // Assuming qrCode is the email
       });
+
       if (response.status === 200 && response.data) {
-        setSearchResult(response.data);
+        setGuestInfo(response.data);
         setError(null);
       } else {
         setError('Guest not found.');
@@ -85,6 +94,7 @@ const QrScanner = () => {
       setError('Failed to search guest.');
     }
   };
+
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
