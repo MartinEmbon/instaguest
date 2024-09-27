@@ -70,6 +70,9 @@ const QrScanner = () => {
         }, 3000);
         
         handleSearchByQRCode(code.data);
+
+        // Stop scanning and close the camera
+        setScanning(false); // Close the camera after QR code capture
       }
     }
 
@@ -225,9 +228,8 @@ const QrScanner = () => {
           </table>
         </div>
       )}
-
-      {guestInfo && <div className="guest-info"><p>{guestInfo}</p></div>}
       {error && <p className="error">{error}</p>}
+      {guestInfo && <p className="info">{guestInfo}</p>}
     </div>
   );
 };
