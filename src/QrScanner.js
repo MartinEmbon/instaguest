@@ -117,7 +117,7 @@ const QrScanner = () => {
         if (code) {
           setScannedQRCode(code.data);
           setEmail(code.data);
-          setAlertMessage(`QR Code scanned: ${code.data}`);
+          // setAlertMessage(`QR Code scanned: ${code.data}`);
         } else {
           setError('No QR code found in the image.');
         }
