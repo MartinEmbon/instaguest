@@ -1,38 +1,61 @@
-.App {
-  text-align: center;
+/* App.css */
+
+/* Basic styling for the app */
+.app {
+  font-family: Arial, sans-serif;
+  padding: 20px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Navigation bar styles */
+.navbar {
+  margin-bottom: 20px; /* Space below the navbar */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.navbar ul {
+  list-style: none; /* Remove bullet points */
+  padding: 0; /* Remove default padding */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.navbar li {
+  display: inline; /* Horizontal layout */
+  margin-right: 15px; /* Space between links */
+}
+
+.navbar a {
+  text-decoration: none; /* Remove underline */
+  color: #007bff; /* Link color */
+}
+
+.navbar a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+/* App.css or navbar-specific CSS file */
+.navbar {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: center; /* Center horizontally */
+  background-color: #007bff; /* Background color */
+  padding: 10px 0; /* Vertical padding */
 }
 
-.App-link {
-  color: #61dafb;
+.navbar ul {
+  list-style: none; /* Remove default list styles */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+  display: flex; /* Use flexbox to arrange items */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.navbar li {
+  margin: 0 20px; /* Space between items */
+}
+
+.navbar a {
+  text-decoration: none; /* Remove underline from links */
+  color: white; /* Link color */
+  font-weight: bold; /* Bold font */
+  font-size: 18px; /* Font size */
+}
+
+.navbar a:hover {
+  text-decoration: underline; /* Underline on hover */
 }

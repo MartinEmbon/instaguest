@@ -1,0 +1,15 @@
+/* Footer.css */
+.footer {
+    background-color: #282c34; /* Dark background color */
+    color: white; /* White text */
+    text-align: center; /* Centered text */
+    padding: 20px 0; /* Padding above and below */
+    position: relative; /* Positioning for fixed footer */
+    bottom: 0; /* Align at the bottom */
+    width: 100%; /* Full width */
+  }
+  
+  .footer-content p {
+    margin: 5px 0; /* Margin for paragraphs */
+  }
+  

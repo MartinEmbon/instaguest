@@ -1,0 +1,150 @@
+.qr-scanner-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .qr-scanner-page h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .qr-scanner-page label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+    color: #333;
+  }
+  
+  .qr-scanner-page input[type="file"] {
+    margin: 20px 0;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .qr-scanner-page .scanned-image {
+    margin-top: 20px;
+  }
+  
+  .qr-scanner-page .scanned-image img {
+    border: 2px solid #333;
+    border-radius: 8px;
+  }
+  
+  .qr-scanner-page .guest-info {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #e7f3ff;
+    border-radius: 8px;
+    text-align: left;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .qr-scanner-page .guest-info h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #0073e6;
+  }
+  
+  .qr-scanner-page .guest-info p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .qr-scanner-page .guest-info p strong {
+    color: #0073e6;
+  }
+  
+  .qr-scanner-page p.error {
+    color: red;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
+  .qr-scanner-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+  }
+  
+  .guest-info {
+    margin-top: 20px;
+    color: green;
+    font-weight: bold;
+  }
+  
+  .error {
+    margin-top: 20px;
+    color: red;
+  }
+  .qr-scanner {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    height: 100vh; /* Full viewport height */
+    padding: 20px; /* Add some padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for the container */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #ffffff; /* White background */
+  }
+  
+  h2 {
+    margin-bottom: 20px; /* Spacing below the heading */
+  }
+  
+  .email-search {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    margin-bottom: 20px; /* Spacing below the input */
+  }
+  
+  .email-search input {
+    padding: 10px; /* Padding inside the input */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 4px; /* Rounded corners */
+    margin-right: 10px; /* Spacing between input and button */
+    width: 250px; /* Fixed width for input */
+  }
+  
+  .email-search button {
+    padding: 10px 15px; /* Padding inside the button */
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Transition effect */
+  }
+  
+  .email-search button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  .search-result {
+    margin-bottom: 20px; /* Spacing below search result */
+    text-align: center; /* Center text */
+  }
+  
+  .guest-info {
+    margin-bottom: 20px; /* Spacing below guest info */
+  }
+  
+  .error {
+    color: red; /* Red text for errors */
+  }
+  

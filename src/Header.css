@@ -1,0 +1,19 @@
+.header {
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    background-color: #007bff; /* Primary color */
+    padding: 20px; /* Padding around the header */
+    color: white; /* White text color */
+  }
+  
+  .logo img {
+    max-height: 50px; /* Set logo height */
+    margin-right: 20px; /* Space between logo and title */
+  }
+  
+  .title {
+    font-size: 24px; /* Larger font size for the title */
+    margin: 0; /* Remove default margin */
+  }
+  
