@@ -41,7 +41,8 @@ const QrScannerComponent = () => {
 
   const handleSearchByQRCode = useCallback(async (qrCode) => {
     if (!qrCode) return;
-
+ // Stop the QR scanner after detecting a QR code
+ qrScannerRef.current.stop();
     try {
       const response = await axios.post(API_FIND_GUEST_BY_EMAIL, { qrCode });
       if (response.status === 200 && response.data) {
