@@ -33,7 +33,6 @@ const QrScanner = () => {
       });
       videoRef.current.srcObject = stream;
       videoRef.current.play();
-  
       // Start scanning for QR codes
       requestAnimationFrame(scanQRCode);
     } catch (err) {
@@ -114,13 +113,12 @@ const QrScanner = () => {
     };
     reader.readAsDataURL(file);
   };
+
   const handleEmailSearch = async () => {
     try {
       const response = await axios.post('https://us-central1-moonlit-sphinx-400613.cloudfunctions.net/qr-find-guest-by-email', {
         email,
       });
-      console.log('API Response:', response.data);
-
       if (response.status === 200 && response.data) {
         setSearchResult(response.data);
         setError(null);
@@ -133,8 +131,6 @@ const QrScanner = () => {
     }
   };
 
-
-  // Function to mark guest as present by email using axios
   const markGuestPresentByEmail = async () => {
     if (searchResult) {
       try {
@@ -154,12 +150,13 @@ const QrScanner = () => {
       }
     }
   };
+
   return (
     <div className="qr-scanner">
       <h2>QR Scanner</h2>
       <video ref={videoRef} style={{ width: '100%', display: scanning ? 'block' : 'none' }} />
       <canvas ref={canvasRef} style={{ display: 'none' }} width="640" height="480" />
-      <button onClick={() => setScanning(prev => !prev)}>
+      <button onClick={() => setScanning(prev => !prev)} disabled={scanning}>
         {scanning ? 'Stop Scanning' : 'Start Scanning'}
       </button>
       <div className="upload-section">
