@@ -42,6 +42,8 @@ const QrScanner = () => {
     }
   };
 
+  
+
   const scanQRCode = () => {
     if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
       const canvas = canvasRef.current;
@@ -54,19 +56,20 @@ const QrScanner = () => {
   
       if (code) {
         setScannedQRCode(code.data);
-        setEmail(code.data); // Set email with scanned QR code data
-        
-        // Automatically execute the search when a QR code is scanned
+        // alert(`QR Code scanned: ${code.data}`);
+        // Optionally, you can directly search for the guest after scanning
         handleSearchByQRCode(code.data);
-        
-        // Stop the camera and set scanning to false to close the camera window
+        setEmail(code.data);
+        // Stop the camera
+
+         // Automatically execute the search when a QR code is scanned
+      handleSearchByQRCode(code.data);
         stopCamera();
-        setScanning(false); // Update scanning state to close the camera feed
       } else {
-        requestAnimationFrame(scanQRCode); // Keep scanning if no code is found
+        requestAnimationFrame(scanQRCode); // Keep scanning
       }
     } else {
-      requestAnimationFrame(scanQRCode); // Keep scanning if not ready
+      requestAnimationFrame(scanQRCode); // Keep scanning
     }
   };
 
@@ -227,10 +230,13 @@ const QrScanner = () => {
                 <td>{searchResult.name}</td>
                 <td>{searchResult.email}</td>
                 <td>{searchResult.tableNumber}</td>
-                <td>{searchResult.present ? 'Present' : 'Not Present'}</td>
+                <td>{searchResult.present ? 'Yes' : 'No'}</td>
                 <td>
-                  <button onClick={markGuestPresentByEmail}>
-                    Mark Present
+                  <button 
+                    onClick={markGuestPresentByEmail} 
+                    disabled={searchResult.present} // Disable if already present
+                  >
+                    Mark as Present
                   </button>
                 </td>
               </tr>
@@ -239,8 +245,8 @@ const QrScanner = () => {
         </div>
       )}
   
-      {guestInfo && <p>{guestInfo}</p>}
-      {error && <p>{error}</p>}
+      {guestInfo && <div className="guest-info"><p>{JSON.stringify(guestInfo)}</p></div>}
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };
