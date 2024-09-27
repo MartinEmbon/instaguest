@@ -59,7 +59,7 @@ const QrScanner = () => {
         alert(`QR Code scanned: ${code.data}`);
         // Optionally, you can directly search for the guest after scanning
         handleSearchByQRCode(code.data);
-        
+        setEmail(code.data);
         // Stop the camera
         stopCamera();
       } else {
@@ -176,18 +176,30 @@ const QrScanner = () => {
   return (
     <div className="qr-scanner">
       <h2>QR Scanner</h2>
-      <video ref={videoRef} style={{ width: '100%', display: scanning ? 'block' : 'none' }} />
-      <canvas ref={canvasRef} style={{ display: 'none' }} width="640" height="480" />
+      <video 
+        ref={videoRef} 
+        style={{ width: '100%', display: scanning ? 'block' : 'none' }} 
+      />
+      <canvas 
+        ref={canvasRef} 
+        style={{ display: 'none' }} 
+        width="640" 
+        height="480" 
+      />
       <button onClick={() => setScanning(prev => !prev)}>
         {scanning ? 'Stop Scanning' : 'Start Scanning'}
       </button>
       <div className="upload-section">
-        <input type="file" accept="image/*" onChange={handleFileUpload} />
+        <input 
+          type="file" 
+          accept="image/*" 
+          onChange={handleFileUpload} 
+        />
         {selectedFile && <p>Uploaded File: {selectedFile.name}</p>}
       </div>
-
+  
       {scannedQRCode && <p>Scanned QR Code: {scannedQRCode}</p>}
-
+  
       <div className="email-search">
         <input 
           type="email" 
@@ -197,7 +209,7 @@ const QrScanner = () => {
         />
         <button onClick={handleEmailSearch}>Search Guest</button>
       </div>
-
+  
       {searchResult && (
         <div className="search-result">
           <table>
@@ -229,8 +241,8 @@ const QrScanner = () => {
           </table>
         </div>
       )}
-
-      {guestInfo && <div className="guest-info"><p>{guestInfo}</p></div>}
+  
+      {guestInfo && <div className="guest-info"><p>{JSON.stringify(guestInfo)}</p></div>}
       {error && <p className="error">{error}</p>}
     </div>
   );
