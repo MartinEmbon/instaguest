@@ -142,3 +142,98 @@
   max-width: 400px;
   margin: auto;
 }
+.qr-scanner {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+}
+
+.upload-section {
+  margin: 20px 0;
+}
+
+.email-search {
+  margin: 20px 0;
+}
+
+.search-result {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 20px 0;
+}
+
+.search-result table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.search-result table th, 
+.search-result table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.search-result table th {
+  background-color: #f9f9f9;
+}
+/* Base styling for desktop view */
+.search-result {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 20px 0;
+}
+
+.search-result table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.search-result table th,
+.search-result table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.search-result table th {
+  background-color: #f9f9f9;
+}
+
+/* Responsive styling for mobile devices */
+@media (max-width: 768px) {
+  .search-result table, 
+  .search-result tbody, 
+  .search-result tr, 
+  .search-result th, 
+  .search-result td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Hide table headers */
+  .search-result thead {
+    display: none;
+  }
+
+  /* Style each row to look like a block */
+  .search-result tr {
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+  }
+
+  .search-result td {
+    padding: 10px;
+    text-align: left;
+    position: relative;
+  }
+
+  /* Add label for each cell (to replace hidden headers) */
+  .search-result td::before {
+    content: attr(data-label); /* Use data-label attribute for labels */
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+  }
+}
