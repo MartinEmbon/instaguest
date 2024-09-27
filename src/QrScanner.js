@@ -42,36 +42,46 @@ const QrScanner = () => {
     }
   };
 
-  const stopCamera = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach(track => track.stop());
-      videoRef.current.srcObject = null;
-    }
-  };
+  
 
   const scanQRCode = () => {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-    
-    if (videoRef.current) {
+    if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
+      const canvas = canvasRef.current;
+      canvas.height = videoRef.current.videoHeight;
+      canvas.width = videoRef.current.videoWidth;
+      const context = canvas.getContext('2d');
       context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
       const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
       const code = jsQR(imageData.data, canvas.width, canvas.height);
-
+  
       if (code) {
         setScannedQRCode(code.data);
         alert(`QR Code scanned: ${code.data}`);
+        // Optionally, you can directly search for the guest after scanning
         handleSearchByQRCode(code.data);
+        
+        // Stop the camera
+        stopCamera();
+      } else {
+        requestAnimationFrame(scanQRCode); // Keep scanning
       }
+    } else {
+      requestAnimationFrame(scanQRCode); // Keep scanning
     }
+  };
 
-    requestAnimationFrame(scanQRCode); // Continue scanning
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject;
+      const tracks = stream.getTracks();
+      tracks.forEach(track => track.stop()); // Stop all tracks
+      videoRef.current.srcObject = null; // Clear the video source
+    }
   };
 
   const handleSearchByQRCode = async (qrCode) => {
     try {
-      const response = await axios.post('YOUR_API_ENDPOINT_HERE', {
+      const response = await axios.post('https://us-central1-moonlit-sphinx-400613.cloudfunctions.net/qr-find-guest-by-email', {
         qrCode,
       });
       if (response.status === 200 && response.data) {
