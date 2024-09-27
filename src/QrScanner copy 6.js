@@ -67,7 +67,7 @@ const QrScanner = () => {
       if (code && scannedQRCode !== code.data) {
         setScannedQRCode(code.data);
         setEmail(code.data);
-        displayAlert(`QR Code scanned: ${code.data}`);
+        // displayAlert(`QR Code scanned: ${code.data}`);
         handleSearchByQRCode(code.data);
         setScanning(false);
       }
