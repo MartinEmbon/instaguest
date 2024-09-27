@@ -1,27 +1,51 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import jsQR from 'jsqr';
 import axios from 'axios';
 import './QrScanner.css';
 import { API_FIND_GUEST_BY_EMAIL } from "./endpoints.js";
-import QrScanner from 'react-qr-scanner';
 
-const QRScannerComponent = () => {
+const QrScanner = () => {
   const [guestInfo, setGuestInfo] = useState(null);
   const [error, setError] = useState(null);
   const [email, setEmail] = useState('');
   const [searchResult, setSearchResult] = useState(null);
+  const [scannedQRCode, setScannedQRCode] = useState('');
+  const [scanning, setScanning] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
-  const handleScan = async (data) => {
-    if (data) {
-      setEmail(data); // Populate the email input with the scanned QR code
-      displayAlert(`QR Code scanned: ${data}`);
-      await handleSearchByQRCode(data);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    if (scanning) {
+      startCamera();
+    } else {
+      stopCamera();
+    }
+
+    return () => stopCamera();
+  }, [scanning]);
+
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { exact: 'environment' } },
+      });
+      videoRef.current.srcObject = stream;
+      videoRef.current.play();
+      requestAnimationFrame(scanQRCode);
+    } catch (err) {
+      console.error('Error accessing camera:', err);
+      setError('Could not access camera.');
     }
   };
 
-  const handleError = (err) => {
-    console.error('QR Scanner Error:', err);
-    setError('Could not read QR code.');
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach(track => track.stop());
+      videoRef.current.srcObject = null;
+    }
   };
 
   const displayAlert = (message) => {
@@ -29,6 +53,27 @@ const QRScannerComponent = () => {
     setTimeout(() => {
       setAlertMessage('');
     }, 3000);
+  };
+
+  const scanQRCode = () => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+
+    if (videoRef.current) {
+      context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, canvas.width, canvas.height);
+
+      if (code && scannedQRCode !== code.data) {
+        setScannedQRCode(code.data);
+        setEmail(code.data);
+        displayAlert(`QR Code scanned: ${code.data}`);
+        handleSearchByQRCode(code.data);
+        setScanning(false);
+      }
+    }
+
+    requestAnimationFrame(scanQRCode);
   };
 
   const handleSearchByQRCode = useCallback(async (qrCode) => {
@@ -47,6 +92,26 @@ const QRScannerComponent = () => {
       setError('Failed to search guest.');
     }
   }, []);
+
+  const capturePhoto = () => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+
+    if (videoRef.current) {
+      context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+      const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, canvas.width, canvas.height);
+
+      if (code) {
+        setScannedQRCode(code.data);
+        setEmail(code.data);
+        displayAlert(`QR Code captured: ${code.data}`);
+        handleSearchByQRCode(code.data);
+      } else {
+        setError('No QR code found in the captured photo.');
+      }
+    }
+  };
 
   const handleEmailSearch = async () => {
     try {
@@ -86,12 +151,14 @@ const QRScannerComponent = () => {
   return (
     <div className="qr-scanner">
       <h2>QR Scanner</h2>
-      <QrScanner
-        onError={handleError}
-        onScan={handleScan}
-        style={{ width: '100%' }}
-      />
+      <video ref={videoRef} style={{ width: '100%', display: scanning ? 'block' : 'none' }} />
+      <canvas ref={canvasRef} style={{ display: 'none' }} width="640" height="480" />
+      <button onClick={() => setScanning(prev => !prev)}>
+        {scanning ? 'Stop Scanning' : 'Start Scanning'}
+      </button>
+      <button onClick={capturePhoto}>Capture Photo</button> {/* New button to capture photo */}
       
+      {scannedQRCode && <p>Scanned QR Code: {scannedQRCode}</p>}
       {alertMessage && <p className="alert">{alertMessage}</p>}
       
       <div className="email-search">
@@ -141,4 +208,4 @@ const QRScannerComponent = () => {
   );
 };
 
-export default QRScannerComponent;
+export default QrScanner;
