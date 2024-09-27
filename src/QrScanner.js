@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import QrScanner from 'qr-scanner'; // Import qr-scanner
 import axios from 'axios';
 import './QrScanner.css';
-import { API_FIND_GUEST_BY_EMAIL } from "./endpoints.js";
+import { API_FIND_GUEST_BY_EMAIL,API_MARK_GUEST_AS_PRESENT } from "./endpoints.js";
 
 const QrScannerComponent = () => {
   const [guestInfo, setGuestInfo] = useState(null);
@@ -132,7 +132,7 @@ const handleSearchByQRCode = useCallback(async (qrCode) => {
   const markGuestPresentByEmail = async () => {
     if (searchResult) {
       try {
-        const response = await axios.post(`YOUR_API_ENDPOINT_TO_MARK_GUEST_PRESENT`, {
+        const response = await axios.post({API_MARK_GUEST_AS_PRESENT}, {
           email: searchResult.email
         });
         if (response.status === 200) {
