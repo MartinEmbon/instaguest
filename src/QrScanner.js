@@ -15,23 +15,39 @@ const QrScannerComponent = () => {
   const videoRef = useRef(null);
   const qrScannerRef = useRef(null); // Reference for the QR Scanner instance
 
+  // useEffect(() => {
+  //   if (videoRef.current) {
+  //     qrScannerRef.current = new QrScanner(videoRef.current, (result) => {
+  //       setScannedQRCode(result);
+  //       setEmail(result); // Populate the email input with the scanned QR code
+  //       // displayAlert(`QR Code scanned: ${result}`);
+  //       handleSearchByQRCode(result);
+  //     });
+  //     qrScannerRef.current.start(); // Start scanning
+
+  //     return () => {
+  //       qrScannerRef.current.stop(); // Stop scanning on cleanup
+  //       qrScannerRef.current.destroy(); // Clean up the scanner instance
+  //     };
+  //   }
+  // }, []);
+
   useEffect(() => {
     if (videoRef.current) {
       qrScannerRef.current = new QrScanner(videoRef.current, (result) => {
         setScannedQRCode(result);
+        // Set email directly here; don't call handleSearchByQRCode
         setEmail(result); // Populate the email input with the scanned QR code
-        // displayAlert(`QR Code scanned: ${result}`);
-        handleSearchByQRCode(result);
       });
       qrScannerRef.current.start(); // Start scanning
-
+  
       return () => {
         qrScannerRef.current.stop(); // Stop scanning on cleanup
         qrScannerRef.current.destroy(); // Clean up the scanner instance
       };
     }
   }, []);
-
+  
   const displayAlert = (message) => {
     setAlertMessage(message);
     setTimeout(() => {
@@ -39,23 +55,46 @@ const QrScannerComponent = () => {
     }, 3000);
   };
 
-  const handleSearchByQRCode = useCallback(async (qrCode) => {
-    if (!qrCode) return;
- // Stop the QR scanner after detecting a QR code
- qrScannerRef.current.stop();
-    try {
-      const response = await axios.post(API_FIND_GUEST_BY_EMAIL, { qrCode });
-      if (response.status === 200 && response.data) {
-        setSearchResult(response.data);
-        setError(null);
-      } else {
-        setError('Guest not found.');
-      }
-    } catch (err) {
-      console.error('Error searching guest by QR code:', err);
-      setError('Failed to search guest.');
+//   const handleSearchByQRCode = useCallback(async (qrCode) => {
+//     if (!qrCode) return;
+//  // Stop the QR scanner after detecting a QR code
+//  qrScannerRef.current.stop();
+//     try {
+//       const response = await axios.post(API_FIND_GUEST_BY_EMAIL, { qrCode });
+//       if (response.status === 200 && response.data) {
+//         setSearchResult(response.data);
+//         setError(null);
+//       } else {
+//         setError('Guest not found.');
+//       }
+//     } catch (err) {
+//       console.error('Error searching guest by QR code:', err);
+//       setError('Failed to search guest.');
+//     }
+//   }, []);
+
+const handleSearchByQRCode = useCallback(async (qrCode) => {
+  if (!qrCode) return;
+
+  // Stop the QR scanner after detecting a QR code
+  qrScannerRef.current.stop();
+
+  // Set the email directly from the QR code
+  setEmail(qrCode);
+
+  try {
+    const response = await axios.post(API_FIND_GUEST_BY_EMAIL, { qrCode });
+    if (response.status === 200 && response.data) {
+      setSearchResult(response.data);
+      setError(null);
+    } else {
+      setError('Guest not found.');
     }
-  }, []);
+  } catch (err) {
+    console.error('Error searching guest by QR code:', err);
+    setError('Failed to search guest.');
+  }
+}, []);
 
   const handleEmailSearch = async () => {
     try {
